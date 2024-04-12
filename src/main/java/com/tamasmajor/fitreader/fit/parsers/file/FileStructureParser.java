@@ -1,4 +1,4 @@
-package com.tamasmajor.fitreader.fit.parsers;
+package com.tamasmajor.fitreader.fit.parsers.file;
 
 import com.tamasmajor.fitreader.fit.model.file.FitFile;
 import lombok.val;

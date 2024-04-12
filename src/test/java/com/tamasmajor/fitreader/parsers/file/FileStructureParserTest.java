@@ -1,6 +1,6 @@
-package com.tamasmajor.fitreader.parsers;
+package com.tamasmajor.fitreader.parsers.file;
 
-import com.tamasmajor.fitreader.fit.parsers.FileStructureParser;
+import com.tamasmajor.fitreader.fit.parsers.file.FileStructureParser;
 import lombok.val;
 import org.junit.jupiter.api.Test;
 
