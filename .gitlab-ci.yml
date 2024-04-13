@@ -1,0 +1,17 @@
+image: maven:latest
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+
+before_script:
+  - java -version
+  - mvn --version
+
+cache:
+  paths:
+    - .m2/repository
+
+test:
+  script:
+    - mvn $MAVEN_CLI_OPTS clean test

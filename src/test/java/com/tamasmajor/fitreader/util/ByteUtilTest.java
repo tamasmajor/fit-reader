@@ -26,7 +26,7 @@ class ByteUtilTest {
 
         @Test
         void shouldThrowExceptionWhenLengthIsIncorrect() {
-            val ex = assertThrows(IllegalArgumentException.class, () -> ByteUtil.asInt(new byte[] { 1, 1}, BIG_ENDIAN));
+            val ex = assertThrows(IllegalArgumentException.class, () -> ByteUtil.asInt(new byte[] { 1, 1 }, BIG_ENDIAN));
             assertEquals("Length has to be 4 bytes", ex.getMessage());
         }
 
