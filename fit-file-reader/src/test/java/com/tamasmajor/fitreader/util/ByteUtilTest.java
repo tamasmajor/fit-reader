@@ -48,14 +48,24 @@ class ByteUtilTest {
         }
 
         @Test
+        void shouldConvertLittleEndianTwoBytes() {
+            assertEquals(37855, ByteUtil.asInt(new byte[] { -33, -109 }, LITTLE_ENDIAN));
+        }
+
+        @Test
         void shouldConvertBigEndian() {
             assertEquals(56757483, ByteUtil.asInt(new byte[] { 3, 98, 12, -21 }, BIG_ENDIAN));
         }
 
         @Test
+        void shouldConvertBigEndianTwoBytes() {
+            assertEquals(37855, ByteUtil.asInt(new byte[] { -109, -33 }, BIG_ENDIAN));
+        }
+
+        @Test
         void shouldThrowExceptionWhenLengthIsIncorrect() {
-            val ex = assertThrows(IllegalArgumentException.class, () -> ByteUtil.asInt(new byte[] { 1, 1 }, BIG_ENDIAN));
-            assertEquals("Length has to be 4 bytes", ex.getMessage());
+            val ex = assertThrows(IllegalArgumentException.class, () -> ByteUtil.asInt(new byte[] { 1, 1, 1, 1, 1 }, BIG_ENDIAN));
+            assertEquals("Length has to be less than or equal to 4 bytes", ex.getMessage());
         }
 
     }
