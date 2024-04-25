@@ -1,4 +1,4 @@
-src/main/resources/testfiles/_myrun.fit
+src/main/resources/testfiles/_workoutdoors.*
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
