@@ -18,6 +18,10 @@ public class DataHolder {
         return data[currentPosition];
     }
 
+    public int length() {
+        return data.length;
+    }
+
     public byte[] getNextBytes(int length) {
         if (currentPosition + length > data.length) {
             throw new IllegalArgumentException("Not enough data remaining");

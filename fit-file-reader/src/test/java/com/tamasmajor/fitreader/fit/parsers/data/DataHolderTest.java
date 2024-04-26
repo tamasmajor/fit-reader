@@ -16,6 +16,12 @@ class DataHolderTest {
     }
 
     @Test
+    void shouldReturnLength() {
+        val dataHolder = new DataHolder(new byte[] { 0, 1, 2 });
+        assertEquals(3, dataHolder.length());
+    }
+
+    @Test
     void shouldReturnByteAtCurrentPosition() {
         val dataHolder = new DataHolder(new byte[] { 0, 1, 2, 3, 4, 5 });
         assertEquals(0, dataHolder.getCurrentByte());

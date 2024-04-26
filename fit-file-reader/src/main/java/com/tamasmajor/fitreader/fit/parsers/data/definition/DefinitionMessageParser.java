@@ -96,6 +96,8 @@ public class DefinitionMessageParser {
             byte[] fieldDefinitionBytes = Arrays.copyOfRange(recordBytes, NUMBER_OF_FIELDS_POSITION + 1, NUMBER_OF_FIELDS_POSITION + fieldDefinitionLength  + 1);
             val fieldDefinitions =  parseFieldDefinitions(fieldCount.numberOfFields(), fieldDefinitionBytes);
             builder.fieldDefinitions(fieldDefinitions);
+        } else {
+            builder.fieldDefinitions(List.of());
         }
     }
 
@@ -107,6 +109,8 @@ public class DefinitionMessageParser {
             byte[] fieldDefinitionBytes = Arrays.copyOfRange(recordBytes, definitionStart, definitionStart + fieldDefinitionLength);
             val fieldDefinitions = parseFieldDefinitions(fieldCount.numberOfDevFields(), fieldDefinitionBytes);
             builder.devFieldDefinitions(fieldDefinitions);
+        } else {
+            builder.devFieldDefinitions(List.of());
         }
     }
 

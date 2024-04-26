@@ -23,7 +23,7 @@ public class DefinitionMessageTest {
         // when
         val length = message.length();
         // then
-        assertEquals(17, length);
+        assertEquals(15, length);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class DefinitionMessageTest {
         // when
         val length = message.length();
         // then
-        assertEquals(24, length);
+        assertEquals(22, length);
     }
 
 }

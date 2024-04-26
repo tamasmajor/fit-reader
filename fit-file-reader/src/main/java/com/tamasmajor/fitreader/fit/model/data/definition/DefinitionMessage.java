@@ -13,7 +13,7 @@ import java.util.List;
 public class DefinitionMessage {
     // record header byte + reserved byte + arch byte + global msg 2 bytes + num of garmin fields byte
     private static final int COMMON_BYTES_LENGTH = 6;
-
+    private static final int SINGLE_FIELD_DEFINITION_LENGTH = 3;
 
     private int reserved;
     private Architecture architecture;
@@ -31,11 +31,9 @@ public class DefinitionMessage {
     }
 
     public int length() {
-        int fieldsLength = fieldDefinitions.stream().map(FieldDefinition::getSize).reduce(0, Integer::sum);
-        int devFieldsLength = devFieldDefinitions.stream().map(FieldDefinition::getSize).reduce(0, Integer::sum);
-        var length = COMMON_BYTES_LENGTH + fieldsLength;
-        if (devFieldsLength > 0) {
-            length += 1 + devFieldsLength; // 1 -> number of dev fields byte
+        int length = COMMON_BYTES_LENGTH + numberOfFields * SINGLE_FIELD_DEFINITION_LENGTH;
+        if (numberOfDevFields > 0) {
+            length += 1 + numberOfDevFields * SINGLE_FIELD_DEFINITION_LENGTH;
         }
         return length;
     }
