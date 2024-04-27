@@ -2,10 +2,7 @@ package com.tamasmajor.fitreader.fit.model.data;
 
 import com.tamasmajor.fitreader.fit.model.data.definition.DefinitionMessage;
 import com.tamasmajor.fitreader.fit.model.data.definition.FieldDefinition;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
-import lombok.val;
+import lombok.*;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -13,8 +10,9 @@ import java.util.stream.Stream;
 @Getter
 @Builder
 @ToString
+@AllArgsConstructor
 public class DataMessage {
-    private int localMessage;
+    private int localMessageNumber;
     private List<Value> values;
     private DefinitionMessage definitionMessage;
 
