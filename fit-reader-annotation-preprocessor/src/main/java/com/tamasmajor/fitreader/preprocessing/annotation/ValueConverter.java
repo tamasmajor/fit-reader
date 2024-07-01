@@ -7,5 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)
-public @interface Message {
+public @interface ValueConverter {
+    Class<?> converter();
 }
