@@ -12,6 +12,8 @@ import lombok.ToString;
 public class SimpleNoPropertiesMessage {
     public static SimpleNoPropertiesMessage of(Map<Integer, byte[]> values) {
         SimpleNoPropertiesMessageBuilder builder = SimpleNoPropertiesMessage.builder();
+        values.forEach((key, value) -> {
+        });
         return builder.build();
     }
 }
