@@ -7,9 +7,14 @@ import lombok.Getter;
 import lombok.ToString;
 
 import javax.lang.model.element.*;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toMap;
 
 public class TypeCreator {
     private static final String TYPE_SUFFIX = "Message";
@@ -17,10 +22,13 @@ public class TypeCreator {
 
     private final Types typeUtils;
     private final Elements elementsUtil;
+    private final Map<Class<?>, TypeMirror> types;
 
     public TypeCreator(Types typeUtils, Elements elementsUtil) {
         this.typeUtils = typeUtils;
         this.elementsUtil = elementsUtil;
+        this.types = Stream.of(Integer.class, Long.class)
+                .collect(toMap(c -> c, c -> elementsUtil.getTypeElement(c.getTypeName()).asType()));
     }
 
     public JavaFile create(TypeElement el) {
@@ -31,6 +39,7 @@ public class TypeCreator {
                 .addModifiers(Modifier.PUBLIC);
 
         generateFields(typeSpec, el);
+        generateFactory(typeSpec, el);
 
         return JavaFile.builder(getPackageName(el), typeSpec.build()).indent(DEFAULT_INDENT).build();
     }
@@ -44,6 +53,32 @@ public class TypeCreator {
                     .addModifiers(Modifier.PRIVATE)
                     .build());
         });
+    }
+
+    private void generateFactory(TypeSpec.Builder typeSpec, TypeElement el) {
+        ClassName generatedType = ClassName.get(getPackageName(el), getGeneratedName(el));
+        String generatedTypeName = getGeneratedName(el);
+
+        CodeBlock.Builder builderMethodBody = CodeBlock.builder();
+        builderMethodBody.addStatement("$LBuilder builder = $L.builder()", generatedTypeName, generatedTypeName);
+        builderMethodBody.addStatement("return builder.build()");
+
+        typeSpec.addMethod(MethodSpec.methodBuilder("of")
+                .addModifiers(Modifier.PUBLIC)
+                .addModifiers(Modifier.STATIC)
+                .addParameter(createBuilderMethodParameterMap())
+                .returns(generatedType)
+                .addCode(builderMethodBody.build())
+                .build());
+    }
+
+    private ParameterSpec createBuilderMethodParameterMap() {
+        ParameterizedTypeName parameterizedTypeName = ParameterizedTypeName.get(
+                ClassName.get(Map.class),
+                ClassName.get(Integer.class),
+                ArrayTypeName.of(TypeName.BYTE));
+
+        return ParameterSpec.builder(parameterizedTypeName, "values").build();
     }
 
     private String getGeneratedName(TypeElement el) {
