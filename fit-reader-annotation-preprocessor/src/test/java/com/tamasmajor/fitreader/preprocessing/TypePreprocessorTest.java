@@ -33,7 +33,7 @@ class TypePreprocessorTest {
     }
 
     @Test
-    void shouldConvertWithoutNoProperties() throws Exception {
+    void shouldConvertWithoutNoProperties() {
         Compilation compilation = compiler.compile(JavaFileObjects.forResource("testcases/SimpleNoProperties.java"));
         assertThat(compilation).succeeded();
         assertThat(compilation)
@@ -42,12 +42,21 @@ class TypePreprocessorTest {
     }
 
     @Test
-    void shouldConvertWithSingleSimpleProperty() throws Exception {
+    void shouldConvertWithSingleSimpleProperty() {
         Compilation compilation = compiler.compile(JavaFileObjects.forResource("testcases/SimpleProperty.java"));
         assertThat(compilation).succeeded();
         assertThat(compilation)
                 .generatedSourceFile("testcases/SimplePropertyMessage")
                 .hasSourceEquivalentTo(JavaFileObjects.forResource("testcases/SimplePropertyMessage.java"));
+    }
+
+    @Test
+    void shouldConvertUsingCustomConverter() {
+        Compilation compilation = compiler.compile(JavaFileObjects.forResource("testcases/PropertyCustomConverter.java"));
+        assertThat(compilation).succeeded();
+        assertThat(compilation)
+                .generatedSourceFile("testcases/PropertyCustomConverterMessage")
+                .hasSourceEquivalentTo(JavaFileObjects.forResource("testcases/PropertyCustomConverterMessage.java"));
     }
 
 

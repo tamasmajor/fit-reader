@@ -2,6 +2,7 @@ package com.tamasmajor.fitreader.preprocessing;
 
 import com.squareup.javapoet.*;
 import com.tamasmajor.fitreader.preprocessing.annotation.FieldNumber;
+import com.tamasmajor.fitreader.preprocessing.annotation.UnitConverter;
 import com.tamasmajor.fitreader.preprocessing.annotation.ValueConverter;
 import lombok.Builder;
 import lombok.Getter;
@@ -64,7 +65,15 @@ public class TypeCreator {
             String fieldName = field.getSimpleName().toString();
             int fieldNumber = field.getAnnotation(FieldNumber.class).value();
             builderMethodBody.add("\tif (key == $L) {\n", fieldNumber);
-            builderMethodBody.add("\t\tbuilder.$L($L.convert(value, $L.class));\n", fieldName, valueConverterReference, field.asType().toString());
+            if (field.getAnnotation(UnitConverter.class) != null) {
+                String unitConverterReference = getUnitConverterReference(field);
+                String unitConverterMethod = field.getAnnotation(UnitConverter.class).method();
+                TypeElement unitConverterSourceType = getUnitConverterSourceType(field);
+                builderMethodBody.add("\t\tbuilder.$L($L.$L($L.convert(value, $L.class)));\n",
+                        fieldName, unitConverterReference, unitConverterMethod, valueConverterReference, unitConverterSourceType);
+            } else {
+                builderMethodBody.add("\t\tbuilder.$L($L.convert(value, $L.class));\n", fieldName, valueConverterReference, field.asType().toString());
+            }
             builderMethodBody.add("\t}\n");
         });
         builderMethodBody.add("});\n");
@@ -100,6 +109,32 @@ public class TypeCreator {
 
         }
         return reference;
+    }
+
+    private String getUnitConverterReference(Element el) {
+        String reference = null;
+        try {
+            UnitConverter annotation = el.getAnnotation(UnitConverter.class);
+            annotation.converter(); // This line will throw MirroredTypeException
+        } catch (MirroredTypeException mte) {
+            TypeMirror mirror = mte.getTypeMirror();
+            TypeElement element = (TypeElement) typeUtils.asElement(mirror);
+            reference = getPackageName(element) + "." + element.getSimpleName().toString();
+
+        }
+        return reference;
+    }
+
+    private TypeElement getUnitConverterSourceType(Element el) {
+        TypeElement sourceType = null;
+        try {
+            UnitConverter annotation = el.getAnnotation(UnitConverter.class);
+            annotation.sourceType(); // This line will throw MirroredTypeException
+        } catch (MirroredTypeException mte) {
+            TypeMirror mirror = mte.getTypeMirror();
+            sourceType = (TypeElement) typeUtils.asElement(mirror);
+        }
+        return sourceType;
     }
 
     private String getGeneratedName(TypeElement el) {

@@ -1,4 +1,4 @@
-package com.tamasmajor.fitreader.preprocessing.annotation.unitoconverter;
+package com.tamasmajor.fitreader.preprocessing.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
