@@ -26,6 +26,7 @@ public class Record {
     private Integer heartRate;
 
     @FieldNumber(4)
+    @UnitConverter(converter = Scaler.class, method = "multiplyBy2", sourceType = Integer.class)
     private Integer cadence;
 
     @FieldNumber(5)
@@ -33,7 +34,8 @@ public class Record {
     private Double distance;
 
     @FieldNumber(6)
-    private Integer speed;
+    @UnitConverter(converter = Scaler.class, method = "divideBy1000", sourceType = Integer.class)
+    private Double speed;
 
     @FieldNumber(7)
     private Integer power;

@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.tamasmajor</groupId>
         <artifactId>fit-reader</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>fit-file-reader</artifactId>
@@ -21,8 +21,8 @@
     <dependencies>
         <dependency>
             <groupId>com.tamasmajor</groupId>
-            <artifactId>fit-reader-annotation-preprocessor</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <artifactId>fit-model</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -33,6 +33,10 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
     </dependencies>
 
